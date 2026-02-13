@@ -1,0 +1,191 @@
+:root {
+	--ui-bg: #111;
+	--ui-bg-soft: rgba(17, 17, 17, 0.7);
+	--ui-border: #333;
+	--ui-text: #fff;
+	--ui-muted: rgba(255, 255, 255, 0.75);
+
+	--hud-radius: 10px;
+	--hud-blur: blur(6px);
+}
+
+html,
+body {
+	height: 100%;
+}
+
+.bgLayer {
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+
+	background-image: url("./assets/image/bg-isekai-room.png");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+/* CODINGAN NAVBAR STRT */
+.navbar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+
+	width: 100%;
+	height: clamp(52px, 8vh, 64px);
+
+	background: var(--ui-bg-soft);
+	border-top: 1px solid var(--ui-border);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	z-index: 1000;
+}
+
+.navItmB {
+	list-style: none;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+
+	width: 100%;
+	max-width: 720px;
+	padding: 0;
+	margin: 0;
+}
+
+.navItm {
+	flex: 1;
+	text-align: center;
+}
+
+.linkNav {
+	text-decoration: none;
+	color: var(--ui-text);
+	font-size: clamp(1.2rem, 4vw, 1.6rem);
+}
+
+body {
+	margin: 0;
+	padding-bottom: clamp(52px, 8vh, 64px);
+}
+/* CODINGAN NAVBAR END */
+
+.statMiniDisplay {
+	position: fixed;
+	top: clamp(10px, 2vw, 20px);
+	left: clamp(10px, 2vw, 20px);
+
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+
+	padding: clamp(8px, 1.5vw, 12px);
+	background: var(--ui-bg-soft);
+	backdrop-filter: var(--hud-blur);
+
+	border-radius: var(--hud-radius);
+	border: 1px solid var(--ui-border);
+
+	font-size: clamp(12px, 1.8vw, 15px);
+	color: var(--ui-text);
+
+	z-index: 2000;
+	max-width: min(220px, 45vw);
+}
+
+.displayStat {
+	display: flex;
+}
+
+.statItem {
+	margin: 0;
+	line-height: 1.3;
+	white-space: nowrap;
+}
+
+.statItem span {
+	font-weight: 600;
+	color: var(--ui-muted);
+}
+
+@media (min-width: 1024px) {
+	.statMiniDisplay {
+		font-size: 15px;
+		padding: 12px 14px;
+	}
+
+	.navbar {
+		height: 56px;
+	}
+}
+
+/* INI BAGIAN SCENE STRT */
+
+.gameScene {
+  position: relative;
+  width: 100%;
+  min-height: 100svh; /* lebih stabil dari 100vh */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* Character */
+.character {
+  position: absolute;
+  bottom: clamp(90px, 12vh, 120px); /* menyesuaikan navbar */
+  left: 50%;
+  transform: translateX(-50%);
+  
+  height: clamp(380px, 60vh, 820px);
+  width: auto;
+  pointer-events: none;
+}
+
+/* Dialog Container */
+.dialogContainer {
+  position: fixed;
+  bottom: clamp(52px, 8vh, 64px); /* tepat di atas navbar */
+  left: 0;
+  width: 100%;
+  
+  padding: clamp(14px, 2vw, 30px);
+  box-sizing: border-box;
+}
+
+/* Wrapper agar dialog tidak full mentok */
+.dialogInner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Nama Character */
+.dialogName {
+  display: inline-block;
+  background: #1a1a1a;
+  color: white;
+  border-radius: 10px 10px 0 0;
+  font-weight: 600;
+
+  font-size: clamp(14px, 1.1vw, 20px);
+  padding: clamp(6px, 1vw, 12px);
+}
+
+/* Bubble */
+.dialogBubble {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(4px);
+
+  padding: clamp(18px, 2.5vw, 32px);
+  border-radius: 0 16px 16px 16px;
+
+  font-size: clamp(16px, 1.3vw, 22px);
+  line-height: 1.6;
+
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+/* INI BAGIAN SCENE END  */
