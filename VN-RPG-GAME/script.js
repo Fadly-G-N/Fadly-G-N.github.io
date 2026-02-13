@@ -23,4 +23,4 @@ function showDialog(name, text) {
 }
 
 /* Contoh */
-showDialog("Developer", "Maaf saat ini game masih dalam tahap pembuatan kebanyakan sistem belum di buat.");
+showDialog("Dev. Admin F", "Maaf saat ini game masih dalam tahap pembuatan, hampir semua fitur belum di buat.");
