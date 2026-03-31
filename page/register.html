@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - RPG Life</title>
+
+  <style>
+    :root {
+      --clr-primary: #f472b6;
+      --clr-bg: linear-gradient(to bottom, #fff1f8, #ffe4ec);
+      --clr-glass: rgba(255, 255, 255, 0.75);
+      --clr-text-main: #4a044e;
+      --clr-text-muted: #9d174d;
+      --clr-border: rgba(255,255,255,0.4);
+
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(244, 114, 182, 0.2);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: var(--clr-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: var(--clr-text-main);
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 2rem;
+
+      background: var(--clr-glass);
+      backdrop-filter: blur(12px);
+
+      border-radius: var(--radius);
+      border: 1px solid var(--clr-border);
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--clr-primary);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+      color: var(--clr-text-muted);
+    }
+
+    input {
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid var(--clr-border);
+      outline: none;
+      transition: 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--clr-primary);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .info-text {
+      font-size: 0.75rem;
+      color: var(--clr-text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .info-text a {
+      color: var(--clr-primary);
+      text-decoration: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 0.7rem;
+      margin-top: 1rem;
+
+      border: none;
+      border-radius: 10px;
+
+      background: var(--clr-primary);
+      color: white;
+      font-weight: bold;
+
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+    }
+
+    .auth-nav {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    .auth-nav a {
+      color: var(--clr-primary);
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="form-container">
+    <h1>Create Account</h1>
+
+    <form id="registerForm" novalidate>
+
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" required minlength="3"/>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required minlength="6"/>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" required minlength="6"/>
+      </div>
+
+      <!-- Hobby -->
+      <div class="form-group">
+        <label for="hobby">Hobby</label>
+        <input type="text" id="hobby" placeholder="Contoh: Gaming, Reading"/>
+      </div>
+
+      <!-- Gender -->
+      <fieldset class="form-group">
+        <legend>Gender</legend>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="male" required /> Male</label>
+          <label><input type="radio" name="gender" value="female" /> Female</label>
+        </div>
+      </fieldset>
+
+      <p class="info-text">
+        Data disimpan di local storage. 
+        <a href="#" onclick="showInfo(event)">Pelajari lebih lanjut</a>
+      </p>
+
+      <button type="submit">Create Account</button>
+
+    </form>
+
+    <div class="auth-nav">
+      Sudah punya akun? 
+      <a href="./signin.html">Sign In</a>
+    </div>
+  </main>
+
+  <script>
+    /* =========================
+       REGISTER SYSTEM (MULTI ACCOUNT)
+    ========================== */
+    const form = document.getElementById("registerForm");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirm = document.getElementById("confirmPassword").value.trim();
+      const hobby = document.getElementById("hobby").value.trim();
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+
+      if (password !== confirm) {
+        alert("Password tidak sama!");
+        return;
+      }
+
+      let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+
+      const exists = accounts.some(acc => acc.username === username);
+
+      if (exists) {
+        alert("Username sudah digunakan!");
+        return;
+      }
+
+      const newUser = {
+        id: Date.now(),
+        username,
+        password,
+        hobby,
+        gender
+      };
+
+      accounts.push(newUser);
+
+      localStorage.setItem("accounts", JSON.stringify(accounts));
+      localStorage.setItem("currentUser", JSON.stringify(newUser));
+
+      alert("Account berhasil dibuat! 🌸");
+
+      window.location.href = "../home.html";
+    });
+
+    function showInfo(e) {
+      e.preventDefault();
+      alert("Data disimpan di browser menggunakan localStorage.");
+    }
+  </script>
+
+</body>
+</html>

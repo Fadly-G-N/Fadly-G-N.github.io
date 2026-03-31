@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>VN RPG Game</title>
+
+		<!-- External CSS -->
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+		<!-- =========================
+       HEADER / NAVIGATION
+  ========================== -->
+		<header class="header">
+			<nav class="navbar" aria-label="Main Navigation">
+				<ul class="nav-list">
+					<li><a href="#" class="nav-link" aria-current="page">Home</a></li>
+					<li><a href="./page/quest.html" class="nav-link">Quest</a></li>
+					<li><a href="./page/gift.html" class="nav-link">Gift</a></li>
+					<li><a href="./page/stat.html" class="nav-link">Stat</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<!-- =========================
+      CLOCK UI
+   ========================= -->
+		<div class="clock-ui" aria-label="Jam dan tanggal">
+			<div id="tanggal" class="clock-date">--</div>
+			<div id="jam" class="clock-time">--:--:--</div>
+		</div>
+
+		<!-- =========================
+       MAIN GAME CONTAINER
+  ========================== -->
+		<main class="game-container">
+			<!-- Background Layer -->
+			<section class="background-layer" aria-hidden="true"></section>
+
+			<!-- =========================
+         PLAYER MINI STATS
+    ========================== -->
+			<aside class="player-stats" aria-label="Player Stats">
+				<ul class="stats-list">
+					<li class="stat-item">
+						<span class="stat-label">EXP:</span>
+						<span id="exp" class="stat-value">0</span>
+					</li>
+					<li class="stat-item">
+						<span class="stat-label">PLT:</span>
+						<span id="plt" class="stat-value">0</span>
+					</li>
+					<li class="stat-item">
+						<span class="stat-label">MNY:</span>
+						<span id="mny" class="stat-value">0</span>
+					</li>
+				</ul>
+			</aside>
+
+			<!-- =========================
+         GAME SCENE
+    ========================== -->
+			<section class="game-scene" aria-label="Game Scene">
+				<!-- Character -->
+				<figure class="character-container">
+					<img
+						src="./assets/character/def-character-w.png"
+						alt="Default Character W"
+						id="mainCharacter"
+						class="character pos-center active" />
+				</figure>
+
+				<!-- =========================
+           DIALOG SYSTEM
+      ========================== -->
+				<section class="dialog-system" id="dialogBox" aria-live="polite">
+					<header class="dialog-header">
+						<h2 id="dialogName" class="dialog-name">Developer</h2>
+					</header>
+
+					<div class="dialog-content">
+						<p id="dialogText" class="dialog-text">
+							Halo... selamat datang di RPG Life.
+						</p>
+					</div>
+				</section>
+			</section>
+		</main>
+
+		<!-- =========================
+       AUDIO SYSTEM (BGM)
+       scalable & maintainable
+  ========================== -->
+		<audio
+			id="bgm"
+			class="audio-bgm"
+			preload="auto"
+			loop
+			aria-hidden="true"
+			autoplay="autoplay">
+			<source src="./assets/audio/bgm-chill.mp3" type="audio/mpeg" />
+			Your browser does not support audio.
+		</audio>
+
+		<!-- =========================
+       SCRIPT
+  ========================== -->
+		<script src="UI.js" defer></script>
+	</body>
+</html>
