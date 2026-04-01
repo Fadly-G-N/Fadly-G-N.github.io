@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register - RPG Life</title>
+  <title>Sign In - RPG Life</title>
 
   <style>
+    /* =========================
+       ROOT (SAKURA THEME)
+    ========================== */
     :root {
       --clr-primary: #f472b6;
       --clr-bg: linear-gradient(to bottom, #fff1f8, #ffe4ec);
@@ -18,6 +21,9 @@
       --shadow: 0 10px 30px rgba(244, 114, 182, 0.2);
     }
 
+    /* =========================
+       BODY
+    ========================== */
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
@@ -29,9 +35,12 @@
       color: var(--clr-text-main);
     }
 
+    /* =========================
+       CONTAINER
+    ========================== */
     .form-container {
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       padding: 2rem;
 
       background: var(--clr-glass);
@@ -48,6 +57,9 @@
       color: var(--clr-primary);
     }
 
+    /* =========================
+       FORM
+    ========================== */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -72,12 +84,9 @@
       border-color: var(--clr-primary);
     }
 
-    .radio-group {
-      display: flex;
-      gap: 1rem;
-      margin-top: 0.5rem;
-    }
-
+    /* =========================
+       INFO
+    ========================== */
     .info-text {
       font-size: 0.75rem;
       color: var(--clr-text-muted);
@@ -89,6 +98,9 @@
       text-decoration: none;
     }
 
+    /* =========================
+       BUTTON
+    ========================== */
     button {
       width: 100%;
       padding: 0.7rem;
@@ -109,6 +121,9 @@
       transform: scale(1.03);
     }
 
+    /* =========================
+       NAV
+    ========================== */
     .auth-nav {
       margin-top: 1rem;
       text-align: center;
@@ -125,108 +140,75 @@
 <body>
 
   <main class="form-container">
-    <h1>Create Account</h1>
+    <h1>Sign In</h1>
 
-    <form id="registerForm" novalidate>
+    <form id="loginForm" novalidate>
 
-      <!-- Username -->
       <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" id="username" required minlength="3"/>
+        <input type="text" id="username" required autocomplete="username"/>
       </div>
 
-      <!-- Password -->
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" required minlength="6"/>
+        <input type="password" id="password" required autocomplete="current-password"/>
       </div>
-
-      <!-- Confirm Password -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirm Password</label>
-        <input type="password" id="confirmPassword" required minlength="6"/>
-      </div>
-
-      <!-- Hobby -->
-      <div class="form-group">
-        <label for="hobby">Hobby</label>
-        <input type="text" id="hobby" placeholder="Contoh: Gaming, Reading"/>
-      </div>
-
-      <!-- Gender -->
-      <fieldset class="form-group">
-        <legend>Gender</legend>
-        <div class="radio-group">
-          <label><input type="radio" name="gender" value="male" required /> Male</label>
-          <label><input type="radio" name="gender" value="female" /> Female</label>
-        </div>
-      </fieldset>
 
       <p class="info-text">
-        Data disimpan di local storage. 
+        Data login diambil dari local storage. 
         <a href="#" onclick="showInfo(event)">Pelajari lebih lanjut</a>
       </p>
 
-      <button type="submit">Create Account</button>
+      <button type="submit">Masuk</button>
 
     </form>
 
     <div class="auth-nav">
-      Sudah punya akun? 
-      <a href="./signin.html">Sign In</a>
+      Belum punya akun? 
+      <a href="./register.html">Register</a>
     </div>
   </main>
 
   <script>
     /* =========================
-       REGISTER SYSTEM (MULTI ACCOUNT)
+       LOGIN SYSTEM (MULTI ACCOUNT)
     ========================== */
-    const form = document.getElementById("registerForm");
+    const form = document.getElementById("loginForm");
 
     form.addEventListener("submit", function(e) {
       e.preventDefault();
 
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
-      const confirm = document.getElementById("confirmPassword").value.trim();
-      const hobby = document.getElementById("hobby").value.trim();
-      const gender = document.querySelector('input[name="gender"]:checked')?.value;
 
-      if (password !== confirm) {
-        alert("Password tidak sama!");
+      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+
+      const user = accounts.find(acc => 
+        acc.username === username && acc.password === password
+      );
+
+      if (!user) {
+        alert("Username atau password salah!");
         return;
       }
 
-      let accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+      /* =========================
+         SET CURRENT USER
+      ========================== */
+      localStorage.setItem("currentUser", JSON.stringify(user));
 
-      const exists = accounts.some(acc => acc.username === username);
+      alert("Login berhasil! 🌸");
 
-      if (exists) {
-        alert("Username sudah digunakan!");
-        return;
-      }
-
-      const newUser = {
-        id: Date.now(),
-        username,
-        password,
-        hobby,
-        gender
-      };
-
-      accounts.push(newUser);
-
-      localStorage.setItem("accounts", JSON.stringify(accounts));
-      localStorage.setItem("currentUser", JSON.stringify(newUser));
-
-      alert("Account berhasil dibuat! 🌸");
-
-      window.location.href = "../home.html";
+      /* redirect ke home */
+      window.location.href = "../index.html";
     });
 
+    /* =========================
+       INFO
+    ========================== */
     function showInfo(e) {
       e.preventDefault();
-      alert("Data disimpan di browser menggunakan localStorage.");
+      alert("Data disimpan di browser (localStorage) sebagai simulasi sistem akun.");
     }
   </script>
 
