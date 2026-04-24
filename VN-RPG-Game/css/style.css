@@ -2,17 +2,17 @@
    1. MODERN TOKENS & RESET
 ========================= */
 :root {
-	/* Color Palette - Soft & Professional */
-	--clr-primary: #f472b6;
-	--clr-bg-glass: rgba(255, 255, 255, 0.75);
-	--clr-text-main: #4a044e;
-	--clr-text-muted: #9d174d;
-	--clr-border: rgba(255, 255, 255, 0.4);
+	/* Color Palette - Soft Isekai Neutral */
+	--clr-primary: #7c9cff; /* soft magical blue (calm + fantasy) */
+	--clr-bg-glass: rgba(245, 247, 255, 0.75); /* subtle misty light */
+	--clr-text-main: #1e293b; /* deep slate (easy to read) */
+	--clr-text-muted: #64748b; /* soft gray-blue */
+	--clr-border: rgba(124, 156, 255, 0.25); /* subtle accent border */
 
 	/* System Values */
 	--radius-ui: 18px;
 	--blur-ui: blur(14px);
-	--shadow-ui: 0 10px 30px rgba(157, 23, 77, 0.15);
+	--shadow-ui: 0 10px 30px rgba(30, 41, 59, 0.15);
 	--transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	--safe-bottom: env(safe-area-inset-bottom, 1rem);
 }
@@ -168,7 +168,7 @@ body {
 	position: absolute;
 	top: -1.2rem;
 	left: 1.2rem;
-	background: var(--color-accent, #f472b6);
+	background: var(--clr-primary, #7c9cff);
 	color: white;
 	padding: 0.2rem 1rem;
 	border-radius: 5px;

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Scene</title>
+
+		<style type="text/css" media="all">
+			.scene-page {
+				margin: 0;
+				font-family: sans-serif;
+				background: #000;
+			}
+
+			/* Background */
+			#scene-container {
+				width: 100vw;
+				height: 100vh;
+				position: relative;
+				background-size: cover;
+				background-position: center;
+			}
+
+			#scene-container::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: rgba(0, 0, 0, 0.4);
+			}
+
+			/* Narasi */
+			#narasi {
+				position: absolute;
+				top: 8%;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 85%;
+				text-align: center;
+				color: #facc15;
+				font-weight: bold;
+			}
+
+			/* Dialog */
+			#dialog-box {
+				position: absolute;
+				bottom: 5%;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 90%;
+				min-height: 150px;
+				background: rgba(255, 255, 255, 0.9);
+				border-radius: 16px;
+				padding: 18px;
+			}
+
+			#nama-karakter {
+				position: absolute;
+				top: -12px;
+				left: 12px;
+				background: #7c9cff;
+				color: white;
+				padding: 4px 12px;
+				border-radius: 8px;
+				font-weight: bold;
+			}
+
+			#teks-dialog {
+				margin-top: 10px;
+			}
+
+			/* Button */
+			#btn-next {
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+			}
+
+			/* Choices */
+			#pilihan-container {
+				margin-top: 10px;
+				display: none;
+				flex-direction: column;
+				gap: 10px;
+			}
+
+			.btn-pilihan {
+				padding: 10px;
+				background: #334155;
+				color: white;
+				border-radius: 8px;
+				cursor: pointer;
+			}
+
+			/* HUD */
+			#hud-stat {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				background: rgba(0, 0, 0, 0.6);
+				color: white;
+				padding: 10px;
+				border-radius: 10px;
+			}
+		</style>
+	</head>
+
+	<body class="scene-page">
+		<div id="scene-container">
+			<!-- HUD -->
+			<div id="hud-stat">
+				Murid: <span id="stat-nama">Arka</span><br />
+				Trust: <span id="stat-trust">0</span> | Mental:
+				<span id="stat-mental">0</span><br />
+				Sword: <span id="stat-sword">0</span> | Tactics:
+				<span id="stat-tactics">0</span>
+			</div>
+
+			<!-- Narasi -->
+			<div id="narasi"></div>
+
+			<!-- Dialog -->
+			<div id="dialog-box">
+				<div id="nama-karakter"></div>
+				<div id="teks-dialog"></div>
+
+				<div id="pilihan-container"></div>
+				<button id="btn-next">▶</button>
+			</div>
+		</div>
+
+		<script type="text/javascript" charset="utf-8">
+			let allScenes = {}
+			let sceneData = {}
+			let currentSceneId = ""
+			let dialogIndex = 0
+			let isTyping = false
+			let typingInterval
+
+			let playerStats = {
+				nama: "Arka",
+				trust: 0,
+				mental: 50,
+				sword: 0,
+				tactics: 0
+			}
+
+			const elNarasi = document.getElementById("narasi")
+			const elNama = document.getElementById("nama-karakter")
+			const elDialog = document.getElementById("teks-dialog")
+			const elContainer = document.getElementById("scene-container")
+			const elBtnNext = document.getElementById("btn-next")
+			const elPilihan = document.getElementById("pilihan-container")
+
+			async function initGame() {
+				const res = await fetch("../js/data/sceneData.json")
+				allScenes = await res.json()
+
+				currentSceneId = "prolog_terdampar"
+				loadScene(currentSceneId)
+			}
+
+			function loadScene(id) {
+				sceneData = allScenes[id]
+				dialogIndex = 0
+
+				elContainer.style.backgroundImage = `url(${sceneData.background})`
+
+				typeWriter(sceneData.narasi, elNarasi, () => {
+					showDialog(0)
+				})
+			}
+
+			function typeWriter(text, el, callback) {
+				if (isTyping) return
+
+				isTyping = true
+				let i = 0
+				el.innerHTML = ""
+
+				typingInterval = setInterval(() => {
+					if (i < text.length) {
+						el.innerHTML += text[i++]
+					} else {
+						clearInterval(typingInterval)
+						isTyping = false
+						callback && callback()
+					}
+				}, 20)
+			}
+
+			function showDialog(i) {
+				if (i >= sceneData.dialogs.length) {
+					if (sceneData.pilihan) return showChoices()
+					if (sceneData.nextScene) return loadScene(sceneData.nextScene)
+					return
+				}
+
+				const d = sceneData.dialogs[i]
+				elNama.innerText = d.nama
+				typeWriter(d.teks, elDialog)
+			}
+
+			function showChoices() {
+				elBtnNext.style.display = "none"
+				elPilihan.innerHTML = ""
+				elPilihan.style.display = "flex"
+
+				sceneData.pilihan.forEach(p => {
+					const btn = document.createElement("button")
+					btn.className = "btn-pilihan"
+					btn.innerText = p.teks
+
+					btn.onclick = () => {
+						if (p.effects) {
+							for (let k in p.effects) {
+								playerStats[k] += p.effects[k]
+							}
+						}
+						loadScene(p.next)
+					}
+
+					elPilihan.appendChild(btn)
+				})
+			}
+
+			function nextDialog() {
+				if (isTyping) {
+					clearInterval(typingInterval)
+					isTyping = false
+					return
+				}
+
+				dialogIndex++
+				showDialog(dialogIndex)
+			}
+
+			elBtnNext.onclick = nextDialog
+			window.onload = initGame
+		</script>
+	</body>
+</html>

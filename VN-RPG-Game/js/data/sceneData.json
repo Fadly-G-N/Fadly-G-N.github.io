@@ -1,0 +1,91 @@
+{
+  "prolog_terdampar": {
+    "background": "url('https://images.unsplash.com/photo-1508697014387-db70aad34f4d?w=1280')",
+    "warnaTema": "#546E7A",
+    "narasi": "Pasukan hancur. Kau satu-satunya yang selamat. Hujan mengguyur desa asing ini...",
+    "dialogs": [
+      { "nama": "Komandan", "teks": "Ini... di mana? Pasukanku... semua gugur..." },
+      { "nama": "???", "teks": "Hei! Pak, sadar! Jangan mati di depan rumahku!" },
+      { "nama": "Narator", "teks": "Seorang pemuda desa menolongmu. Trauma perang masih membekas di benakmu." }
+    ],
+    "nextScene": "pertemuan_pertama"
+  },
+
+  "pertemuan_pertama": {
+    "background": "url('https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=1280')",
+    "warnaTema": "#8D6E63",
+    "narasi": "3 hari kemudian. Luka fisikmu sembuh, tapi tidak dengan mentalmu.",
+    "dialogs": [
+      { "nama": "Arka", "teks": "Jadi Bapak beneran komandan dari ibu kota? Ajari aku jadi knight!" },
+      { "nama": "Komandan", "teks": "Aku sudah selesai dengan perang, nak. Itu hanya membawa kematian." },
+      { "nama": "Arka", "teks": "Tapi aku mau lindungi desa ini! Aku gak mau lemah lagi!" },
+      { "nama": "Komandan", "teks": "...." }
+    ],
+    "pilihan": [
+      {
+        "teks": "“Perang itu neraka. Jangan cari mati.” [Tolak Mentah]",
+        "next": "tolak_dingin",
+        "effects": { "trust": -10, "alignment": 5 }
+      },
+      {
+        "teks": "“Kau tau apa rasanya lihat temanmu mati?” [Cerita Trauma]",
+        "next": "cerita_trauma",
+        "effects": { "mental": -5, "trust": 10, "alignment": 10 }
+      },
+      {
+        "teks": "“...Baik. Tapi latihannya keras.” [Terima Langsung]",
+        "next": "mulai_melatih",
+        "effects": { "trust": 15, "sword": 5 }
+      }
+    ]
+  },
+
+  "tolak_dingin": {
+    "background": "url('https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=1280')",
+    "warnaTema": "#37474F",
+    "narasi": "Kau memilih menutup diri. Arka terlihat kecewa dan terluka.",
+    "dialogs": [
+      { "nama": "Komandan", "teks": "Cari guru lain. Aku hanya beban dan pembawa sial." },
+      { "nama": "Arka", "teks": "... Baiklah, Pak. Maaf sudah lancang." },
+      { "nama": "Narator", "teks": "Hubungan kalian memburuk. Tapi takdir berkata lain..." }
+    ],
+    "nextScene": "event_bandit_datang"
+  },
+
+  "cerita_trauma": {
+    "background": "url('https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?w=1280')",
+    "warnaTema": "#5D4037",
+    "narasi": "Kau menceritakan kengerian perang. Arka mendengarkan dengan serius.",
+    "dialogs": [
+      { "nama": "Komandan", "teks": "Darah, teriakan... aku masih mendengarnya tiap malam, nak." },
+      { "nama": "Arka", "teks": "Aku... aku gak tau seberat itu, Pak. Maaf." },
+      { "nama": "Komandan", "teks": "Kalau kau tetap mau belajar, kau harus lebih kuat dari itu." },
+      { "nama": "Arka", "teks": "Aku mau! Ajari aku agar tidak ada yang mati lagi!" }
+    ],
+    "nextScene": "mulai_melatih"
+  },
+
+  "event_bandit_datang": {
+    "background": "url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1280')",
+    "warnaTema": "#D32F2F",
+    "narasi": "Seminggu kemudian. Bandit menyerang desa. Arka mencoba melawan sendirian.",
+    "dialogs": [
+      { "nama": "Arka", "teks": "Ugh! Jangan... sentuh... warga desa!" },
+      { "nama": "Bandit", "teks": "Halah bocah ingusan!" },
+      { "nama": "Komandan", "teks": "SIAL! TIDAK LAGI! AKU TIDAK AKAN DIAM SAJA!" },
+      { "nama": "Narator", "teks": "Trauma-mu kalah oleh amarah. Kau mengambil pedang karatan di dekatmu." }
+    ],
+    "nextScene": "mulai_melatih"
+  },
+
+  "mulai_melatih": {
+    "background": "url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?w=1280')",
+    "warnaTema": "#E91E63",
+    "narasi": "Sejak hari itu, kau resmi menjadi mentor Arka. Perjalanan kalian dimulai.",
+    "dialogs": [
+      { "nama": "Komandan", "teks": "Dengar, Arka. Jadi knight bukan soal gagah. Ini soal tanggung jawab." },
+      { "nama": "Arka", "teks": "Siap, Guru! Aku akan lakukan apa saja!" },
+      { "nama": "Narator", "teks": "Stat Sword +5. Trust +15. Perjalanan melatihnya dimulai sekarang." }
+    ]
+  }
+}
