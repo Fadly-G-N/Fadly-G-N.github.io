@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Quest Herba</title>
+
+		<style type="text/css" media="all">
+			.grass-container {
+				display: flex;
+				gap: 20px;
+				justify-content: center;
+				margin-top: 40px;
+			}
+
+			.grass {
+				width: 120px;
+				height: 120px;
+				background: #2d7a35;
+				border-radius: 12px;
+				cursor: pointer;
+				transition: 0.2s;
+			}
+
+			.grass:hover {
+				transform: scale(1.05);
+			}
+
+			.herb {
+				background: #49b95d;
+			}
+
+			.quest-card {
+				padding: 20px;
+				border-radius: 12px;
+				background: #202020;
+				margin-bottom: 20px;
+			}
+
+			.quest-reward {
+				display: flex;
+				gap: 15px;
+				margin-top: 10px;
+			}
+
+			.quest-btn {
+				margin-top: 15px;
+				padding: 10px 20px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<main class="herba-page">
+			<h1>Cari Herba</h1>
+
+			<p> Temukan rumput yang berbeda. </p>
+
+			<section class="grass-container">
+				<div class="grass"></div>
+				<div class="grass"></div>
+				<div class="grass herb"></div>
+			</section>
+		</main>
+
+		<script type="module">
+			import { Player } from "../../js/core.js"
+
+			const grasses = document.querySelectorAll(".grass")
+
+			grasses.forEach(grass => {
+				grass.addEventListener("click", () => {
+					// HERBA BENAR
+					if (grass.classList.contains("herb")) {
+						Player.addExp(20)
+						Player.addMoney(50)
+						Player.reduceStamina(3)
+
+						alert("Kamu menemukan herba!")
+
+						window.location.href = "../../index.html"
+
+						return
+					}
+
+					// SALAH
+					alert("Ini hanya rumput biasa...")
+				})
+			})
+		</script>
+	</body>
+</html>

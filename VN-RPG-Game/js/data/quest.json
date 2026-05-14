@@ -1,0 +1,40 @@
+[
+    {
+        "id": 1,
+        "title": "Bantu Warga Desa",
+        "desc": "Kumpulkan 10 kayu dari hutan.",
+        "type": "normal",
+        "target": null,
+        "reward": {
+            "exp": 50,
+            "mny": 100,
+            "stm": -10
+        }
+    },
+
+    {
+        "id": 2,
+        "title": "Berburu Slime",
+        "desc": "Kalahkan 5 slime di pinggir desa.",
+        "type": "normal",
+        "target": null,
+        "reward": {
+            "exp": 30,
+            "mny": 70,
+            "stm": -5
+        }
+    },
+
+    {
+        "id": 3,
+        "title": "Cari Herba",
+        "desc": "Temukan tanaman herbal langka di padang rumput.",
+        "type": "minigame",
+        "target": "../../pages/questPage/qstHerba.html",
+        "reward": {
+            "exp": 20,
+            "mny": 50,
+            "stm": -3
+        }
+    }
+]
