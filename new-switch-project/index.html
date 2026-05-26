@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Project Saklar Kompleks</title>
+		<link rel="stylesheet" href="style.css" type="text/css" media="all" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="Cstatus">
+				<ul class="statLamp">
+					<li class="typeLamp"
+						>Jenis Lampu: <span id="lbl-type">Pijar</span></li
+					>
+					<li class="rangkaian"
+						>Gerbang Logika: <span id="lbl-gate">AND</span></li
+					>
+					<li class="volt">Tegangan: <span id="lbl-volt">0</span> V</li>
+					<li class="watt">Daya: <span id="lbl-watt">0</span> W</li>
+					<li class="energi">Arus: <span id="lbl-current">0</span> A</li>
+					<li class="resist">Hambatan: <span id="lbl-resist">0</span> Ω</li>
+				</ul>
+			</div>
+
+			<div class="teks logic">
+				<h1 class="logic-stat" id="system-status">Sistem Normal</h1>
+			</div>
+
+			<div class="Clamp1">
+				<img id="lamp1" src="./assets/images/off.gif" alt="Status Lampu" />
+			</div>
+
+			<div class="Cbutton">
+				<button class="btn1" id="btn-input-a" data-state="off"
+					>Saklar A: OFF</button
+				>
+				<button class="btn1" id="btn-input-b" data-state="off"
+					>Saklar B: OFF</button
+				>
+			</div>
+
+			<div class="setting">
+				<label for="voltage-slider">Pengaturan Tegangan Sumber (Volt):</label>
+				<input type="range" id="voltage-slider" min="0" max="440" value="220" />
+			</div>
+
+			<nav class="navbar">
+				<ul>
+					<li><a href="lampList.html">Lamp list</a></li>
+					<li><a href="logicList.html">Logic list</a></li>
+					<li><a href="EnergiList.html">Energi list</a></li>
+					<li><a href="resistList.html">resistor list</a></li>
+					<li><a href="kapasitorList.html">kapasitor list</a></li>
+					<li><a href="rangkaianList.html">rangkaian list</a></li>
+					<li><a href="guide.html">guide</a></li>
+				</ul>
+			</nav>
+		</div>
+
+		<script src="script.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

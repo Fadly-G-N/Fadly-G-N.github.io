@@ -1,0 +1,256 @@
+/* ==========================================================================
+   1. RESET & BASE STYLES (Tema Gelap Kamar)
+   ========================================================================== */
+:root {
+    /* Variabel Utama untuk Kontrol JavaScript */
+    --kecerahan: 0; /* Skala 0 sampai 1 */
+    --warna-cahaya: rgba(255, 240, 150, var(--kecerahan));
+    
+    /* Palet Warna UI */
+    --bg-main: #121212;
+    --bg-card: #1e1e1e;
+    --bg-input: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #aaaaaa;
+    --color-accent: #00adb5;
+    --color-danger: #ff2e63;
+    --color-success: #4e9f3d;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ==========================================================================
+   2. LAYOUT CONTAINER
+   ========================================================================== */
+.container {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ==========================================================================
+   3. PANEL INFORMASI (Cstatus)
+   ========================================================================== */
+.Cstatus {
+    background-color: var(--bg-input);
+    border-radius: 8px;
+    padding: 16px;
+    border-left: 4px solid var(--color-accent);
+}
+
+.statLamp {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.statLamp li {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+}
+
+.statLamp li span {
+    color: var(--text-primary);
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace; /* Gaya digital meter */
+}
+
+/* ==========================================================================
+   4. STATUS GERBANG LOGIKA
+   ========================================================================== */
+.teks.logic {
+    text-align: center;
+}
+
+.logic-stat {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+/* State warna status berdasarkan class yang nanti dimanipulasi JS */
+.logic-stat.normal { color: var(--color-success); }
+.logic-stat.overload { color: #ffaa00; animation: blink 0.5s infinite alternate; }
+.logic-stat.broken { color: var(--color-danger); }
+
+/* ==========================================================================
+   5. VISUALISASI LAMPU & EFEK GLOW
+   ========================================================================== */
+.Clamp1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+    position: relative;
+    background: radial-gradient(circle, rgba(255,240,150, calc(var(--kecerahan) * 0.2)) 0%, rgba(0,0,0,0) 70%);
+    border-radius: 50%;
+    transition: background 0.1s ease;
+}
+
+#lamp1 {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    transition: filter 0.1s ease-in-out;
+    
+    /* Menggabungkan efek kecerahan gambar + pendaran drop-shadow */
+    filter: 
+        brightness(calc(1 + var(--kecerahan) * 1.5)) 
+        drop-shadow(0 0 calc(var(--kecerahan) * 35px) var(--warna-cahaya));
+}
+
+/* Efek Hancur/Mati Total jika class .broken aktif via JS */
+#lamp1.broken {
+    filter: grayscale(1) brightness(0.2) sepia(0.8) !important;
+    animation: explode 0.25s ease-out forwards;
+}
+
+/* ==========================================================================
+   6. TOMBOL INPUT SAKLAR (Cbutton)
+   ========================================================================== */
+.Cbutton {
+    display: flex;
+    gap: 16px;
+}
+
+.btn1 {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-primary);
+    background-color: #3a3a3a;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 0 #252525;
+}
+
+.btn1:active {
+    transform: translateY(4px);
+    box-shadow: 0 0px 0 #252525;
+}
+
+/* Styling Tombol berdasarkan Atribut State */
+.btn1[data-state="on"] {
+    background-color: var(--color-success);
+    box-shadow: 0 4px 0 #2c6e22;
+}
+
+.btn1[data-state="broken"] {
+    background-color: #555555;
+    color: #888888;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(4px);
+}
+
+/* ==========================================================================
+   7. PENGATURAN SLIDER FISIKA
+   ========================================================================== */
+.setting {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+#voltage-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--bg-input);
+    outline: none;
+}
+
+#voltage-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+#voltage-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* ==========================================================================
+   8. NAVIGASI MATERI
+   ========================================================================== */
+.navbar {
+    border-top: 1px solid #333;
+    padding-top: 16px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.navbar a {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    padding: 6px 12px;
+    background-color: rgba(0, 173, 181, 0.1);
+    border-radius: 20px;
+    transition: background 0.2s;
+}
+
+.navbar a:hover {
+    background-color: var(--color-accent);
+    color: var(--bg-main);
+}
+
+/* ==========================================================================
+   9. ANIMASI KEYFRAMES
+   ========================================================================== */
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0.4; }
+}
+
+@keyframes explode {
+    0% { transform: scale(1) rotate(0deg); }
+    20% { transform: scale(1.1) rotate(-3deg); }
+    40% { transform: scale(0.9) rotate(3deg); filter: brightness(3); }
+    100% { transform: scale(1) rotate(0deg); }
+}

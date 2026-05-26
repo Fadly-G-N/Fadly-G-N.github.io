@@ -49,39 +49,43 @@ const renderQuest = () => {
     if (!container) return;
 
     container.innerHTML = QUEST_DATA.map(
-        (quest) => {
+    (quest) => {
 
-            return `
-                <article
-                    class="quest-card"
-                    data-id="${quest.id}"
-                >
+        return `
+            <article
+                class="quest-card"
+                data-id="${quest.id}"
+            >
 
-                    <div class="quest-header">
-                        <h2 class="quest-title">
-                            ${quest.title}
-                        </h2>
-                    </div>
+                <header class="quest-card-header">
 
-                    <p class="quest-desc">
-                        ${quest.desc}
-                    </p>
+                    <h2 class="quest-title">
+                        ${quest.title}
+                    </h2>
 
-                    <div class="quest-reward">
+                </header>
 
-                        <span>
-                            EXP +${quest.reward.exp}
-                        </span>
+                <p class="quest-desc">
+                    ${quest.desc}
+                </p>
 
-                        <span>
-                            ¥ ${quest.reward.mny}
-                        </span>
+                <section class="quest-reward">
 
-                        <span>
-                            STM ${quest.reward.stm}
-                        </span>
+                    <span>
+                        EXP +${quest.reward.exp}
+                    </span>
 
-                    </div>
+                    <span>
+                        ¥ ${quest.reward.mny}
+                    </span>
+
+                    <span>
+                        STM ${quest.reward.stm}
+                    </span>
+
+                </section>
+
+                <footer class="quest-footer">
 
                     <button
                         class="quest-btn"
@@ -90,10 +94,12 @@ const renderQuest = () => {
                         Mulai Quest
                     </button>
 
-                </article>
-            `;
-        }
-    ).join('');
+                </footer>
+
+            </article>
+        `;
+    }
+).join('');
 
     setupQuestButton();
 };
