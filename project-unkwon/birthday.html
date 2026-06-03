@@ -420,7 +420,7 @@
   <div class="card" id="card">
     <div class="card-badge">✨ Surprise! ✨</div>
     <h1>Selamat Ulang Tahun Nana-chan!</h1>
-    <span class="age">Sweet 16</span>
+    <span class="age">Sweet 15</span>
     <div class="name">— untuk kamu yang spesial 💖 —</div>
     <div class="divider"></div>
 
@@ -428,7 +428,7 @@
 
     <p>
       Hari ini adalah hari yang <strong>sangat istimewa</strong> — hari di mana kamu
-      genap <strong>16 tahun</strong>! 🌸
+      genap <strong>15 tahun</strong>! 🌸
     </p>
     <p>
       Semoga setiap langkahmu dipenuhi <strong>kebahagiaan</strong>,
@@ -446,7 +446,7 @@
       "Jadilah seperti bunga — tumbuh indah tidak peduli di mana pun kamu berada." 🌸
     </p>
     <p style="font-style:italic; color:#888; font-size:.95rem;">
-      "geli gak ya aku bikin gini hehe?" - <strong>F</strong>
+      "maaf gak bisa ngasih apa apa hehe" - <strong>F</strong>
     </p>
 
     <button class="wish-btn" onclick="sendWish()">random message 💌</button>
@@ -454,6 +454,8 @@
   
 </div>
 
+ <audio id="bg-music" src="./bday-song.mp3" loop></audio>
+ 
 <script>
   /* ── FLOATING HEARTS ── */
   const EMOJIS = ['💖','💗','🌸','✨','🦋','🌺','💫','🌷','💕','⭐'];
@@ -478,7 +480,9 @@
   function openGift() {
     if (opened) return;
     opened = true;
-
+    const music = document.getElementById('bg-music');
+music.volume = 0.5;
+music.play();
     const gift = document.getElementById('gift');
     const lid  = document.getElementById('lid');
     const hint = document.getElementById('cta-hint');
