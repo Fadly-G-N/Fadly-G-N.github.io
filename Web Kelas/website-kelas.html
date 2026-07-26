@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Kelas</title>
+<style>
+  :root{
+    --board:#1e3d30;
+    --board-dark:#142a21;
+    --paper:#fbfaf3;
+    --card:#ffffff;
+    --ink:#233028;
+    --ink-soft:#5b6b60;
+    --line:#e4e9de;
+    --grid:rgba(30,61,48,0.06);
+    --blue:#2f6fed;
+    --blue-soft:#eaf1ff;
+    --yellow:#f0b90b;
+    --yellow-soft:#fff6dc;
+    --red:#e2543a;
+    --red-soft:#fdeae6;
+    --radius:14px;
+    --shadow:0 3px 14px rgba(30,61,48,0.08);
+    --font-display:'Segoe UI',Verdana,Tahoma,sans-serif;
+    --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;color:var(--ink);font-family:var(--font-body);background:var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, var(--grid) 0, var(--grid) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, var(--grid) 0, var(--grid) 1px, transparent 1px, transparent 28px);
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  :focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+
+  /* ---------------- HERO / CHALKBOARD ---------------- */
+  .hero{
+    background:
+      radial-gradient(circle at 12% 20%, rgba(255,255,255,0.05), transparent 40%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 34px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 34px),
+      linear-gradient(160deg, var(--board), var(--board-dark));
+    color:#f4f7f2;padding:52px 0 44px;position:relative;
+  }
+  .hero-top{display:flex;align-items:flex-start;gap:16px;}
+  .hero-logo-slot{flex:none;position:relative;}
+  .hero-logo{
+    width:72px;height:72px;border-radius:16px;background:rgba(255,255,255,0.08);
+    border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;
+    overflow:hidden;font-size:26px;
+  }
+  .hero-logo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .logo-edit-btn{
+    position:absolute;bottom:-8px;right:-8px;width:26px;height:26px;border-radius:50%;
+    background:var(--yellow);border:2px solid var(--board-dark);color:#4a3a02;font-size:12px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+  }
+  .hero .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:2.5px;text-transform:uppercase;
+    background:rgba(255,255,255,0.1);padding:5px 12px;border-radius:999px;font-weight:700;
+  }
+  .hero h1{
+    font-family:var(--font-display);font-size:clamp(28px,6vw,44px);margin:16px 0 6px;
+    text-shadow:0 0 18px rgba(255,255,255,0.18);letter-spacing:0.5px;
+  }
+  .hero .school{font-size:15px;opacity:0.85;margin-bottom:18px;}
+  .hero .desc{max-width:560px;font-size:14px;line-height:1.7;opacity:0.9;}
+  .hero-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+  .hero-stats .chip{
+    background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);
+    border-radius:12px;padding:10px 16px;min-width:100px;
+  }
+  .hero-stats .chip b{display:block;font-size:17px;font-family:var(--font-display);}
+  .hero-stats .chip span{font-size:11px;opacity:0.75;}
+
+  /* ---------------- NAV ---------------- */
+  .nav{
+    position:sticky;top:0;z-index:50;background:var(--card);
+    border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-family:var(--font-display);font-size:14.5px;}
+  .nav .brand .dot{width:9px;height:9px;border-radius:2px;background:var(--yellow);transform:rotate(45deg);flex:none;}
+  .nav ul{list-style:none;display:flex;gap:4px;margin:0;padding:0;}
+  .nav a.navlink{
+    display:block;padding:9px 14px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--ink-soft);
+  }
+  .nav a.navlink:hover, .nav a.navlink.active{background:var(--blue-soft);color:var(--blue);}
+  .burger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:8px;}
+  .burger span{width:20px;height:2px;background:var(--ink);border-radius:2px;}
+  @media (max-width:720px){
+    .nav ul{
+      position:absolute;top:56px;left:0;right:0;background:var(--card);flex-direction:column;
+      padding:8px;border-bottom:1px solid var(--line);box-shadow:var(--shadow);display:none;gap:2px;
+    }
+    .nav ul.open{display:flex;}
+    .burger{display:flex;}
+  }
+
+  section{padding:44px 0;}
+  .section-head{margin-bottom:22px;}
+  .section-head .tag{
+    display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--blue);
+  }
+  .section-head .tag .dot{width:7px;height:7px;background:var(--yellow);border-radius:2px;transform:rotate(45deg);}
+  .section-head h2{font-family:var(--font-display);font-size:24px;margin:6px 0 0;}
+
+  /* ---------------- PROFIL ---------------- */
+  .profile-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;}
+  @media (max-width:760px){.profile-grid{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);}
+  .card h3{margin:0 0 10px;font-family:var(--font-display);font-size:15.5px;}
+  .card p{font-size:13.5px;line-height:1.7;color:var(--ink-soft);margin:0;}
+
+  .struktur-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+  .struktur-item{display:flex;align-items:center;gap:10px;font-size:13px;}
+  .struktur-item .badge{
+    flex:none;width:30px;height:30px;border-radius:9px;background:var(--yellow-soft);color:#8a6708;
+    display:flex;align-items:center;justify-content:center;font-size:14px;
+  }
+  .struktur-item b{display:block;font-size:13px;}
+  .struktur-item span{color:var(--ink-soft);font-size:11.5px;}
+
+  .siswa-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:14px;
+  }
+  .siswa-card{
+    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px 12px;
+    display:flex;align-items:center;gap:9px;
+  }
+  .siswa-card .no{
+    flex:none;min-width:30px;height:26px;padding:0 5px;border-radius:8px;background:var(--blue-soft);color:var(--blue);
+    font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;
+  }
+  .siswa-card .nm{font-size:12.5px;font-weight:600;line-height:1.3;}
+
+  /* ---------------- JADWAL ---------------- */
+  .day-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+  .day-tab{
+    border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;
+    font-size:12.5px;font-weight:700;cursor:pointer;color:var(--ink-soft);
+  }
+  .day-tab.active{background:var(--board);border-color:var(--board);color:#fff;}
+  .jadwal-table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+  .jadwal-table th{
+    background:var(--blue-soft);color:var(--blue);font-size:11px;text-transform:uppercase;letter-spacing:0.8px;
+    padding:10px 12px;text-align:left;
+  }
+  .jadwal-table td{padding:11px 12px;font-size:13px;border-top:1px solid var(--line);}
+  .jadwal-table tr:hover td{background:#fafcf8;}
+  .jadwal-table .jam{color:var(--ink-soft);font-size:12px;white-space:nowrap;}
+  .jadwal-table tr.break td{background:var(--yellow-soft);color:#8a6708;font-style:italic;font-size:12px;}
+  .jadwal-note{font-size:11.5px;color:var(--ink-soft);margin-top:10px;}
+  .libur-card{
+    background:var(--card);border:1px dashed var(--line);border-radius:var(--radius);
+    padding:26px;text-align:center;color:var(--ink-soft);
+  }
+  .libur-card b{display:block;color:var(--ink);font-size:15px;margin-bottom:4px;}
+
+  .tugas-list{display:flex;flex-direction:column;gap:10px;margin-top:18px;}
+  .tugas-item{
+    display:flex;align-items:flex-start;gap:12px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:13px 14px;
+  }
+  .tugas-item.done{opacity:0.55;}
+  .tugas-item.done .tugas-judul{text-decoration:line-through;}
+  .tugas-chk{
+    flex:none;width:22px;height:22px;border-radius:6px;border:2px solid var(--line);margin-top:2px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;background:var(--card);
+  }
+  .tugas-item.done .tugas-chk{background:var(--blue);border-color:var(--blue);color:#fff;}
+  .tugas-body{flex:1;min-width:0;cursor:pointer;}
+  .tugas-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px;}
+  .tugas-mapel{font-size:10.5px;font-weight:800;color:var(--blue);background:var(--blue-soft);padding:3px 8px;border-radius:999px;}
+  .tugas-deadline{font-size:10.5px;font-weight:700;color:var(--red);background:var(--red-soft);padding:3px 8px;border-radius:999px;}
+  .tugas-judul{font-size:13.5px;font-weight:700;}
+  .tugas-ket{font-size:12px;color:var(--ink-soft);margin-top:2px;line-height:1.5;}
+
+  /* ---------------- PENGUMUMAN ---------------- */
+  .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .filter-chip{
+    border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;
+    font-size:12px;font-weight:700;color:var(--ink-soft);cursor:pointer;
+  }
+  .filter-chip.active{background:var(--yellow);border-color:var(--yellow);color:#4a3a02;}
+  .pengumuman-list{display:flex;flex-direction:column;gap:12px;}
+  .pengumuman-item{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;
+    box-shadow:var(--shadow);position:relative;
+  }
+  .pengumuman-item::before{
+    content:"";position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:0 4px 4px 0;background:var(--yellow);
+  }
+  .peng-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+  .peng-kategori{font-size:10px;font-weight:800;letter-spacing:0.5px;text-transform:uppercase;padding:3px 9px;border-radius:999px;}
+  .peng-kategori.pengumuman{background:var(--blue-soft);color:var(--blue);}
+  .peng-kategori.acara{background:var(--yellow-soft);color:#8a6708;}
+  .peng-kategori.info{background:#e9f7ee;color:#1e7a45;}
+  .peng-tanggal{font-size:11.5px;color:var(--ink-soft);}
+  .peng-judul{font-family:var(--font-display);font-size:15.5px;margin:2px 0 6px;}
+  .peng-isi{font-size:13px;line-height:1.65;color:var(--ink-soft);}
+
+  /* ---------------- GALERI ---------------- */
+  .galeri-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .galeri-hint{font-size:12px;color:var(--ink-soft);max-width:420px;line-height:1.6;}
+  .btn-upload{
+    flex:none;background:var(--board);color:#fff;border:none;border-radius:999px;padding:10px 18px;
+    font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  }
+  .galeri-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;
+  }
+  .galeri-tile{
+    position:relative;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:var(--blue-soft);
+    cursor:pointer;border:1px solid var(--line);
+  }
+  .galeri-tile img{width:100%;height:100%;object-fit:cover;}
+  .galeri-tile .cap{
+    position:absolute;left:0;right:0;bottom:0;padding:6px 8px 5px;font-size:10.5px;color:#fff;
+    background:linear-gradient(0deg, rgba(0,0,0,0.55), transparent);
+  }
+  .galeri-tile .del{
+    position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;
+    background:rgba(0,0,0,0.55);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;
+  }
+  .galeri-empty{
+    grid-column:1/-1;text-align:center;padding:30px 10px;color:var(--ink-soft);font-size:12.5px;
+    border:1.5px dashed var(--line);border-radius:var(--radius);
+  }
+  .lightbox{
+    position:fixed;inset:0;background:rgba(15,25,20,0.9);z-index:100;display:none;
+    align-items:center;justify-content:center;padding:24px;flex-direction:column;gap:12px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:100%;max-height:70vh;border-radius:10px;}
+  .lightbox .cap{color:#fff;font-size:13px;text-align:center;}
+  .lightbox .close{
+    position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;
+    background:rgba(255,255,255,0.14);color:#fff;border:none;font-size:18px;cursor:pointer;
+  }
+
+  /* ---------------- KONTAK ---------------- */
+  .kontak-card{
+    background:linear-gradient(160deg, var(--board), var(--board-dark));color:#f4f7f2;
+    border-radius:var(--radius);padding:26px 22px;text-align:center;box-shadow:var(--shadow);
+  }
+  .kontak-avatar{
+    width:56px;height:56px;border-radius:50%;background:var(--yellow);color:#4a3a02;
+    display:flex;align-items:center;justify-content:center;font-family:var(--font-display);
+    font-size:22px;font-weight:800;margin:0 auto 12px;
+  }
+  .kontak-card .msg{
+    max-width:480px;margin:0 auto 18px;font-size:13.5px;line-height:1.75;opacity:0.92;
+  }
+  .kontak-nama{font-family:var(--font-display);font-size:17px;font-weight:700;}
+  .kontak-peran{font-size:11.5px;opacity:0.7;margin-bottom:16px;}
+  .kontak-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .kontak-btn{
+    display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:999px;
+    font-size:13px;font-weight:700;border:1.5px solid rgba(255,255,255,0.25);
+  }
+  .kontak-btn.wa{background:#25d366;color:#08340f;border-color:#25d366;}
+  .kontak-btn.tel{background:rgba(255,255,255,0.1);color:#f4f7f2;}
+
+  footer{padding:30px 0 40px;text-align:center;color:var(--ink-soft);font-size:12px;}
+  footer .star{color:var(--yellow);}
+</style>
+</head>
+<body>
+
+<header class="hero" id="beranda">
+  <div class="wrap">
+    <div class="hero-top">
+      <div class="hero-logo-slot">
+        <div class="hero-logo" id="hero-logo">\uD83C\uDFEB</div>
+        <div class="logo-edit-btn" id="logo-edit-btn" title="Ganti logo sekolah">&#9998;</div>
+        <input type="file" id="logo-input" accept="image/*" style="display:none;">
+      </div>
+      <div style="flex:1;min-width:0;">
+        <span class="eyebrow" id="hero-eyebrow"></span>
+        <h1 id="hero-title"></h1>
+        <div class="school" id="hero-school"></div>
+      </div>
+    </div>
+    <p class="desc" id="hero-desc"></p>
+    <div class="hero-stats" id="hero-stats"></div>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span><span id="nav-brand"></span></div>
+    <ul id="nav-links">
+      <li><a class="navlink" href="#beranda">Beranda</a></li>
+      <li><a class="navlink" href="#profil">Profil Kelas</a></li>
+      <li><a class="navlink" href="#jadwal">Jadwal &amp; Tugas</a></li>
+      <li><a class="navlink" href="#pengumuman">Pengumuman</a></li>
+      <li><a class="navlink" href="#galeri">Galeri</a></li>
+      <li><a class="navlink" href="#kontak">Kontak</a></li>
+    </ul>
+    <button class="burger" id="burger-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+  <section id="profil">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="tag"><span class="dot"></span>Profil</div>
+        <h2>Tentang Kelas Kami</h2>
+      </div>
+      <div class="profile-grid">
+        <div class="card">
+          <h3>Deskripsi Kelas</h3>
+          <p id="profil-desc"></p>
+          <h3 style="margin-top:16px;">Struktur Kelas</h3>
+          <div class="struktur-list" id="struktur-list"></div>
+        </div>
+        <div class="card">
+          <h3>Daftar Siswa</h3>
+          <div class="siswa-grid" id="siswa-grid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="jadwal">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="tag"><span class="dot"></span>Jadwal</div>
+        <h2>Jadwal Pelajaran</h2>
+      </div>
+      <div class="day-tabs" id="day-tabs"></div>
+      <div id="jadwal-container"></div>
+      <div class="jadwal-note">Sumber: dokumen jadwal pelajaran yang diunggah (Kelas XI TBSM 3). Kolom guru belum tercantum pada dokumen asli.</div>
+
+      <div class="section-head" style="margin-top:36px;">
+        <div class="tag"><span class="dot"></span>Tugas</div>
+        <h2>Daftar Tugas</h2>
+      </div>
+      <div class="tugas-list" id="tugas-list"></div>
+    </div>
+  </section>
+
+  <section id="pengumuman">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="tag"><span class="dot"></span>Pengumuman</div>
+        <h2>Pengumuman &amp; Berita Kelas</h2>
+      </div>
+      <div class="filter-row" id="filter-row"></div>
+      <div class="pengumuman-list" id="pengumuman-list"></div>
+    </div>
+  </section>
+
+  <section id="galeri">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="tag"><span class="dot"></span>Galeri</div>
+        <h2>Galeri Foto Kegiatan</h2>
+      </div>
+      <div class="galeri-toolbar">
+        <div class="galeri-hint">Belum ada server, jadi foto yang ditambah lewat tombol ini tersimpan langsung di HP/browser ini saja (tidak otomatis muncul di HP teman lain). Untuk foto yang ingin tampil buat semua orang, taruh filenya di folder yang sama dengan file website ini lalu daftarkan di <code>CONFIG.galeri</code>.</div>
+        <button class="btn-upload" id="btn-upload-foto">&#128247; Tambah Foto</button>
+        <input type="file" id="galeri-input" accept="image/*" multiple style="display:none;">
+      </div>
+      <div class="galeri-grid" id="galeri-grid"></div>
+    </div>
+  </section>
+
+  <section id="kontak">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="tag"><span class="dot"></span>Kontak</div>
+        <h2>Pengelola &amp; Kontak</h2>
+      </div>
+      <div class="kontak-card">
+        <div class="kontak-avatar" id="kontak-avatar"></div>
+        <div class="kontak-nama" id="kontak-nama"></div>
+        <div class="kontak-peran" id="kontak-peran"></div>
+        <p class="msg" id="kontak-msg"></p>
+        <div class="kontak-actions" id="kontak-actions"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" id="lightbox-close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="cap" id="lightbox-cap"></div>
+</div>
+
+<footer>
+  <span class="star">&#9670;</span> Website Kelas &middot; dibuat untuk keperluan internal kelas &middot; edit data di bagian <code>CONFIG</code> pada file ini untuk menyesuaikan isi
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* =====================================================================
+   CONFIG — SEMUA ISI WEBSITE DIATUR DI SINI.
+   Ganti teks/angka di bawah ini sesuai kelas kalian. Tidak perlu
+   menyentuh bagian HTML/CSS/JS lainnya.
+   ===================================================================== */
+  var CONFIG = {
+    // TODO: ganti nama sekolah & wali kelas sesuai data kalian yang sebenarnya.
+    sekolah: "SMK Nama Sekolah Kalian",
+    kelas: "XI TBSM 3",
+    tahunAjaran: "2026/2027",
+    waliKelas: "Nur'anani S.pd",
+    jumlahSiswa: 24,
+    deskripsi: "Kelas XI TBSM 3 (Teknik dan Bisnis Sepeda Motor) adalah kelas yang kompak, Aktif, dan selalu berusaha menjaga keamanan serta kekompakan antar teman. Website ini dibuat sebagai pusat informasi kelas: profil anggota, jadwal pelajaran, daftar tugas, pengumuman, dan galeri kegiatan.",
+
+    // Path/nama file logo sekolah, taruh file gambarnya satu folder dengan
+    // file HTML ini. Kalau file tidak ditemukan, otomatis tampil ikon sekolah.
+    logoSrc: "logo-sekolah.png",
+
+    // Foto kegiatan permanen (tersimpan di kode, tampil untuk semua orang).
+    // Taruh file fotonya satu folder dengan file HTML ini lalu daftarkan di sini.
+    // Kosongkan array ini kalau belum ada foto untuk dipasang secara permanen.
+    galeri: [
+      // {src:"foto/praktik-bengkel.jpg", caption:"Praktik bengkel TSM"},
+      // {src:"foto/kegiatan-kelas.jpg", caption:"Kegiatan kelas"}
+    ],
+
+    // TODO: struktur kelas belum diketahui dari data yang ada — isi nama
+    // asli sesuai SK/kesepakatan kelas kalian.
+    struktur: [
+      {jabatan:"Wali Kelas", nama:"Nur'anani S.pd", ic:"\u2b50"},
+      {jabatan:"Ketua Kelas", nama:"Safwan Sendana", ic:"\ud83c\udf1f"},
+      {jabatan:"Sekretaris", nama:"Anggun Mulia Anggana", ic:"\ud83d\udcdd"},
+      {jabatan:"Bendahara", nama:"Muhamad Fiqhi Therianshah", ic:"\ud83d\udcb0"}
+    ],
+
+    // Data diambil apa adanya dari foto daftar siswa yang diunggah
+    // (No Urut & Nomor Induk sesuai dokumen asli).
+    siswa: [
+      {absen:1, induk:"11.2526.265", nama:"Anggun Mulia Anggana"},
+      {absen:2, induk:"11.2526.266", nama:"Arifin Dzikri"},
+      {absen:3, induk:"11.2526.267", nama:"Aris Irawan"},
+      {absen:4, induk:"11.2526.268", nama:"Dava Nurul Hidayah"},
+      {absen:5, induk:"11.2526.269", nama:"Deilham"},
+      {absen:6, induk:"11.2526.270", nama:"Ega Hidayatullah"},
+      {absen:7, induk:"11.2526.271", nama:"Fadlan"},
+      {absen:8, induk:"11.2526.272", nama:"Fadli"},
+      {absen:9, induk:"11.2526.273", nama:"Fadly Gusti Nugroho"},
+      {absen:10,  induk:"11.2526.274", nama:"Fitri Nur Falah"},
+      {absen:11, induk:"11.2526.275", nama:"Hamza"},
+      {absen:12, induk:"11.2526.276", nama:"Henia Fitriyani"},
+      {absen:13,  induk:"11.2526.277", nama:"M Haiz Haizasyrof"},
+      {absen:14,  induk:"11.2526.278", nama:"M Lukky Prasetio"},
+      {absen:15, induk:"11.2526.279", nama:"Moch Syalman Ifandar"},
+      {absen:16, induk:"11.2526.280", nama:"Muhamad Fahmi Solahudin"},
+      {absen:17, induk:"11.2526.281", nama:"Muhamad Fiqhi Therianshah"},
+      {absen:18, induk:"11.2526.282", nama:"Muhammad Riki Firlandy"},
+      {absen:19,  induk:"11.2526.283", nama:"Reva Oktaviana"},
+      {absen:20, induk:"11.2526.284", nama:"Ripandi"},
+      {absen:21, induk:"11.2526.285", nama:"Rismadini"},
+      {absen:22, induk:"11.2526.286", nama:"Ristanti"},
+      {absen:23, induk:"11.2526.287", nama:"Safwan Sandana"},
+      {absen:24,  induk:"11.2526.288", nama:"Teguh Hidayah"}
+    ],
+
+    // Info pengelola website, ditampilkan di bagian Kontak paling bawah.
+    // Ganti nomor telepon di bawah ini dengan nomor kalian yang sebenarnya.
+    kontak: {
+      nama: "Fadly Gusti Nugroho",
+      peran: "Pengelola Website Kelas",
+      telepon: "0895-4230-07060",
+      whatsapp: "62895423007060"
+    },
+
+    /* Jadwal di bawah ini diambil apa adanya dari dokumen
+       JADWAL_PELAJARAN_KELAS_XI_TBSM_3.docx yang diunggah. Baris dengan
+       tipe:"break" adalah jam istirahat / MBG, ditampilkan beda warna. */
+    jadwal: {
+      "Senin": [
+        {jam:"06.30 - 07.00", mapel:"Upacara Bendera"},
+        {jam:"07.00 - 07.35", mapel:"Upacara Bendera"},
+        {jam:"07.35 - 08.10", mapel:"Mapel Pilihan (Informatika)"},
+        {jam:"08.10 - 08.45", mapel:"Mapel Pilihan (Informatika)"},
+        {jam:"08.45 - 09.20", mapel:"Penjas"},
+        {jam:"09.20 - 10.00", mapel:"Istirahat", tipe:"break"},
+        {jam:"10.00 - 10.35", mapel:"Penjas"},
+        {jam:"10.35 - 11.10", mapel:"Konsentrasi Keahlian TSM"},
+        {jam:"11.10 - 11.45", mapel:"Konsentrasi Keahlian TSM"},
+        {jam:"11.45 - 12.00", mapel:"MBG (Makan Bergizi Gratis)", tipe:"break"},
+        {jam:"12.00 - 12.35", mapel:"Matematika"},
+        {jam:"12.35 - 13.10", mapel:"Matematika"},
+        {jam:"13.10 - 13.45", mapel:"Matematika"}
+      ],
+      "Selasa": [
+        {jam:"06.30 - 07.00", mapel:"Apel"},
+        {jam:"07.00 - 07.35", mapel:"PAI"},
+        {jam:"07.35 - 08.10", mapel:"PAI"},
+        {jam:"08.10 - 08.45", mapel:"Bahasa Cirebon"},
+        {jam:"08.45 - 09.20", mapel:"Bahasa Cirebon"},
+        {jam:"09.20 - 10.00", mapel:"Istirahat", tipe:"break"},
+        {jam:"10.00 - 10.35", mapel:"Konsentrasi Keahlian TSM"},
+        {jam:"10.35 - 11.10", mapel:"Bahasa Inggris"},
+        {jam:"11.10 - 11.45", mapel:"Bahasa Inggris"},
+        {jam:"11.45 - 12.00", mapel:"MBG (Makan Bergizi Gratis)", tipe:"break"},
+        {jam:"12.00 - 12.35", mapel:"Konsentrasi Keahlian TSM"},
+        {jam:"12.35 - 13.10", mapel:"Konsentrasi Keahlian TSM"}
+      ],
+      "Rabu": [
+        {jam:"06.30 - 07.00", mapel:"Apel"},
+        {jam:"07.00 - 07.35", mapel:"PKK"},
+        {jam:"07.35 - 08.10", mapel:"PKK"},
+        {jam:"08.10 - 08.45", mapel:"PKK"},
+        {jam:"08.45 - 09.20", mapel:"PAI"},
+        {jam:"09.20 - 10.00", mapel:"Istirahat", tipe:"break"},
+        {jam:"10.00 - 10.35", mapel:"PKN"},
+        {jam:"10.35 - 11.10", mapel:"PKN"},
+        {jam:"11.10 - 11.45", mapel:"Bahasa Indonesia"},
+        {jam:"11.45 - 12.00", mapel:"MBG (Makan Bergizi Gratis)", tipe:"break"},
+        {jam:"12.00 - 12.35", mapel:"Bahasa Indonesia"},
+        {jam:"12.35 - 13.10", mapel:"Bahasa Indonesia"}
+      ],
+      "Kamis": [
+        {jam:"06.30 - 07.00", mapel:"Apel"},
+        {jam:"07.00 - 07.35", mapel:"Bahasa Inggris"},
+        {jam:"07.35 - 08.10", mapel:"Bahasa Inggris"},
+        {jam:"08.10 - 08.45", mapel:"Konsentrasi Keahlian TSM"},
+        {jam:"08.45 - 09.20", mapel:"Sejarah"},
+        {jam:"09.20 - 10.00", mapel:"Istirahat", tipe:"break"},
+        {jam:"10.00 - 10.35", mapel:"Mapel Pilihan (Informatika)"},
+        {jam:"10.35 - 11.10", mapel:"Mapel Pilihan (Informatika)"},
+        {jam:"11.10 - 11.45", mapel:"PKK"},
+        {jam:"11.45 - 12.00", mapel:"MBG (Makan Bergizi Gratis)", tipe:"break"},
+        {jam:"12.00 - 12.35", mapel:"PKK"},
+        {jam:"12.35 - 13.10", mapel:"Sejarah"}
+      ],
+      "Jum'at": [
+        {jam:"06.30 - 07.00", mapel:"Apel"},
+        {jam:"07.00 - 07.35", mapel:"Praktek Kejuruan TSM"},
+        {jam:"07.35 - 08.10", mapel:"Praktek Kejuruan TSM"},
+        {jam:"08.10 - 08.45", mapel:"Praktek Kejuruan TSM"},
+        {jam:"08.45 - 09.20", mapel:"(tidak tercantum pada dokumen asli)", tipe:"break"},
+        {jam:"09.20 - 10.00", mapel:"Istirahat", tipe:"break"},
+        {jam:"10.00 - 10.35", mapel:"Praktek Kejuruan TSM"},
+        {jam:"10.35 - 11.10", mapel:"Praktek Kejuruan TSM"}
+      ],
+      "Sabtu": [
+        {jam:"06.30 - 07.00", mapel:"Belajar di rumah", tipe:"libur"}
+      ]
+    },
+
+    // Contoh tugas — silakan ganti sesuai tugas nyata dari guru kalian.
+    tugas: [
+        {mapel:"Belum ada", judul:"Tugas belum diketahui owner", deadline:"unkwon", ket:"hehe tugasnya apa yah"},
+      // {mapel:"Konsentrasi Keahlian TSM", judul:"Laporan Praktik Sistem Rem", deadline:"30 Jul 2026", ket:"Format laporan sesuai contoh yang dibagikan di bengkel."},
+    //  {mapel:"Bahasa Indonesia", judul:"Menulis Teks Deskripsi", deadline:"31 Jul 2026", ket:"Minimal 2 paragraf, tema bebas tentang lingkungan sekitar."},
+    //  {mapel:"PKK", judul:"Proposal Produk Kreatif Sederhana", deadline:"1 Agu 2026", ket:"Tulis tangan di buku tugas, kumpulkan awal jam pelajaran."},
+    //  {mapel:"Bahasa Inggris", judul:"Vocabulary Quiz Preparation", deadline:"3 Agu 2026", ket:"Hafalkan 20 kosakata unit 3, akan ada kuis dadakan."},
+     // {mapel:"Mapel Pilihan (Informatika)", judul:"Membuat Dokumen Presentasi", deadline:"4 Agu 2026", ket:"Untuk praktik minggu depan, bawa flashdisk masing-masing."}  
+    ],
+
+    pengumuman: [
+    //  {tanggal:"24 Jul 2026", kategori:"Pengumuman", judul:"Perubahan Jadwal Piket Minggu Ini", isi:"Karena ada kegiatan sekolah hari Rabu, jadwal piket kelompok 2 dan 3 ditukar. Kelompok 3 piket hari Rabu, kelompok 2 piket hari Kamis."},
+  //    {tanggal:"22 Jul 2026", kategori:"Acara", judul:"Persiapan Lomba 17 Agustus", isi:"Kelas kita akan ikut lomba kebersihan kelas dan tarik tambang. Pertemuan singkat untuk pembagian tugas akan diadakan sepulang sekolah hari Jumat."},
+    //  {tanggal:"20 Jul 2026", kategori:"Info", judul:"Buku Paket IPA Sudah Bisa Diambil", isi:"Buku paket IPA untuk semester ini sudah tersedia di perpustakaan. Silakan diambil sebelum hari Jumat."},
+    //  {tanggal:"18 Jul 2026", kategori:"Pengumuman", judul:"Iuran Kas Kelas Bulan Ini", isi:"Diingatkan untuk melunasi iuran kas kelas bulan Juli sebesar Rp 10.000 kepada bendahara paling lambat akhir bulan."},
+ //     {tanggal:"15 Jul 2026", kategori:"Acara", judul:"Class Meeting Akhir Bulan", isi:"Akan diadakan class meeting santai berupa nonton bareng dan games sederhana di akhir bulan, sebagai apresiasi atas kerja keras satu bulan ini."}
+    ]
+  };
+
+/* ===================================================================== */
+
+  var els = {};
+  ["hero-eyebrow","hero-title","hero-school","hero-desc","hero-stats","nav-brand",
+   "profil-desc","struktur-list","siswa-grid","day-tabs","jadwal-container","tugas-list",
+   "filter-row","pengumuman-list","hero-logo","logo-edit-btn","logo-input",
+   "galeri-grid","btn-upload-foto","galeri-input","lightbox","lightbox-img","lightbox-cap","lightbox-close",
+   "kontak-avatar","kontak-nama","kontak-peran","kontak-msg","kontak-actions"
+  ].forEach(function(id){ els[id] = document.getElementById(id); });
+
+  function esc(str){
+    return String(str).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  /* ---------- HERO ---------- */
+  els["hero-eyebrow"].textContent = "Tahun Ajaran " + CONFIG.tahunAjaran;
+  els["hero-title"].textContent = "Kelas " + CONFIG.kelas;
+  els["hero-school"].textContent = CONFIG.sekolah + " \u2022 Wali Kelas: " + CONFIG.waliKelas;
+  els["hero-desc"].textContent = CONFIG.deskripsi;
+  els["nav-brand"].textContent = "Kelas " + CONFIG.kelas;
+  els["hero-stats"].innerHTML =
+    '<div class="chip"><b>'+CONFIG.jumlahSiswa+'</b><span>Siswa</span></div>'+
+    '<div class="chip"><b>'+CONFIG.struktur.length+'</b><span>Pengurus Kelas</span></div>'+
+    '<div class="chip"><b>'+CONFIG.tugas.length+'</b><span>Tugas Aktif</span></div>';
+
+  /* ---------- PROFIL ---------- */
+  els["profil-desc"].textContent = CONFIG.deskripsi;
+  els["struktur-list"].innerHTML = CONFIG.struktur.map(function(s){
+    return '<div class="struktur-item"><div class="badge">'+s.ic+'</div><div><b>'+esc(s.nama)+'</b><span>'+esc(s.jabatan)+'</span></div></div>';
+  }).join("");
+  els["siswa-grid"].innerHTML = CONFIG.siswa.map(function(s){
+    return '<div class="siswa-card"><div class="no">'+s.absen+'</div><div class="nm">'+esc(s.nama)+'</div></div>';
+  }).join("");
+
+  /* ---------- JADWAL ---------- */
+  var days = Object.keys(CONFIG.jadwal);
+  var activeDay = days[0];
+
+  function renderDayTabs(){
+    els["day-tabs"].innerHTML = days.map(function(d){
+      return '<button class="day-tab '+(d===activeDay?"active":"")+'" data-day="'+esc(d)+'">'+d+'</button>';
+    }).join("");
+  }
+  function renderJadwalBody(){
+    var rows = CONFIG.jadwal[activeDay] || [];
+    if(rows.length === 1 && rows[0].tipe === "libur"){
+      els["jadwal-container"].innerHTML =
+        '<div class="libur-card"><b>Tidak ada tatap muka di sekolah</b>Sesuai jadwal, hari '+esc(activeDay)+' siswa belajar mandiri di rumah.</div>';
+      return;
+    }
+    var body = rows.map(function(r){
+      var isBreak = r.tipe === "break";
+      return '<tr class="'+(isBreak?"break":"")+'"><td class="jam">'+esc(r.jam)+'</td><td>'+esc(r.mapel)+'</td></tr>';
+    }).join("");
+    els["jadwal-container"].innerHTML =
+      '<table class="jadwal-table"><thead><tr><th>Jam</th><th>Mata Pelajaran</th></tr></thead><tbody>'+body+'</tbody></table>';
+  }
+  els["day-tabs"].addEventListener("click", function(e){
+    var t = e.target.closest(".day-tab");
+    if(!t) return;
+    activeDay = t.dataset.day;
+    renderDayTabs();
+    renderJadwalBody();
+  });
+  renderDayTabs();
+  renderJadwalBody();
+
+  /* ---------- TUGAS ---------- */
+  var TUGAS_KEY = "kelas_tugas_selesai";
+  var tugasDone = {};
+  try{ tugasDone = JSON.parse(localStorage.getItem(TUGAS_KEY)) || {}; }catch(e){ tugasDone = {}; }
+
+  function renderTugas(){
+    els["tugas-list"].innerHTML = CONFIG.tugas.map(function(t, i){
+      var done = !!tugasDone[i];
+      return (
+        '<div class="tugas-item '+(done?"done":"")+'">'+
+          '<div class="tugas-chk" data-idx="'+i+'">&#10003;</div>'+
+          '<div class="tugas-body" data-idx="'+i+'">'+
+            '<div class="tugas-top"><span class="tugas-mapel">'+esc(t.mapel)+'</span><span class="tugas-deadline">Deadline '+esc(t.deadline)+'</span></div>'+
+            '<div class="tugas-judul">'+esc(t.judul)+'</div>'+
+            '<div class="tugas-ket">'+esc(t.ket)+'</div>'+
+          '</div>'+
+        '</div>'
+      );
+    }).join("");
+  }
+  els["tugas-list"].addEventListener("click", function(e){
+    var t = e.target.closest("[data-idx]");
+    if(!t) return;
+    var idx = t.dataset.idx;
+    tugasDone[idx] = !tugasDone[idx];
+    try{ localStorage.setItem(TUGAS_KEY, JSON.stringify(tugasDone)); }catch(e){}
+    renderTugas();
+  });
+  renderTugas();
+
+  /* ---------- PENGUMUMAN ---------- */
+  var kategoriList = ["Semua","Pengumuman","Acara","Info"];
+  var activeFilter = "Semua";
+
+  function renderFilters(){
+    els["filter-row"].innerHTML = kategoriList.map(function(k){
+      return '<button class="filter-chip '+(k===activeFilter?"active":"")+'" data-k="'+k+'">'+k+'</button>';
+    }).join("");
+  }
+  function renderPengumuman(){
+    var list = CONFIG.pengumuman.filter(function(p){
+      return activeFilter === "Semua" || p.kategori === activeFilter;
+    });
+    if(!list.length){
+      els["pengumuman-list"].innerHTML = '<div class="card"><p>Belum ada pengumuman untuk kategori ini.</p></div>';
+      return;
+    }
+    els["pengumuman-list"].innerHTML = list.map(function(p){
+      return (
+        '<div class="pengumuman-item">'+
+          '<div class="peng-top"><span class="peng-kategori '+p.kategori.toLowerCase()+'">'+p.kategori+'</span><span class="peng-tanggal">'+esc(p.tanggal)+'</span></div>'+
+          '<div class="peng-judul">'+esc(p.judul)+'</div>'+
+          '<div class="peng-isi">'+esc(p.isi)+'</div>'+
+        '</div>'
+      );
+    }).join("");
+  }
+  els["filter-row"].addEventListener("click", function(e){
+    var t = e.target.closest(".filter-chip");
+    if(!t) return;
+    activeFilter = t.dataset.k;
+    renderFilters();
+    renderPengumuman();
+  });
+  renderFilters();
+  renderPengumuman();
+
+  /* ---------- LOGO SEKOLAH ---------- */
+  var LOGO_KEY = "kelas_logo_override";
+  function renderLogo(){
+    var override = null;
+    try{ override = localStorage.getItem(LOGO_KEY); }catch(e){}
+    if(override){
+      els["hero-logo"].innerHTML = '<img src="'+override+'" alt="Logo sekolah">';
+      return;
+    }
+    // Coba pakai file logo dari CONFIG.logoSrc (taruh filenya satu folder dengan HTML ini).
+    var img = new Image();
+    img.onload = function(){ els["hero-logo"].innerHTML = '<img src="'+CONFIG.logoSrc+'" alt="Logo sekolah">'; };
+    img.onerror = function(){ els["hero-logo"].textContent = "\uD83C\uDFEB"; };
+    img.src = CONFIG.logoSrc;
+  }
+  renderLogo();
+  els["logo-edit-btn"].addEventListener("click", function(){ els["logo-input"].click(); });
+  els["logo-input"].addEventListener("change", function(e){
+    var file = e.target.files && e.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev){
+      try{ localStorage.setItem(LOGO_KEY, ev.target.result); }catch(err){}
+      renderLogo();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ---------- GALERI FOTO ---------- */
+  var GALERI_KEY = "kelas_galeri_upload";
+  var galeriUpload = [];
+  try{ galeriUpload = JSON.parse(localStorage.getItem(GALERI_KEY)) || []; }catch(e){ galeriUpload = []; }
+
+  function renderGaleri(){
+    var permanen = (CONFIG.galeri||[]).map(function(g,i){
+      return '<div class="galeri-tile" data-kind="permanen" data-idx="'+i+'"><img src="'+esc(g.src)+'" alt="'+esc(g.caption||"")+'" onerror="this.parentNode.style.display=\'none\'"><div class="cap">'+esc(g.caption||"")+'</div></div>';
+    }).join("");
+    var upload = galeriUpload.map(function(g,i){
+      return '<div class="galeri-tile" data-kind="upload" data-idx="'+i+'"><img src="'+g.src+'" alt="'+esc(g.caption||"")+'"><div class="cap">'+esc(g.caption||"Foto dari HP")+'</div><div class="del" data-del-idx="'+i+'">&times;</div></div>';
+    }).join("");
+    var all = permanen + upload;
+    els["galeri-grid"].innerHTML = all || '<div class="galeri-empty">Belum ada foto. Tekan "Tambah Foto" untuk menambahkan dari HP kalian.</div>';
+  }
+  renderGaleri();
+
+  els["btn-upload-foto"].addEventListener("click", function(){ els["galeri-input"].click(); });
+  els["galeri-input"].addEventListener("change", function(e){
+    var files = Array.prototype.slice.call(e.target.files || []);
+    if(!files.length) return;
+    var remaining = files.length;
+    files.forEach(function(file){
+      var reader = new FileReader();
+      reader.onload = function(ev){
+        galeriUpload.push({src:ev.target.result, caption:file.name});
+        remaining--;
+        if(remaining === 0){
+          try{ localStorage.setItem(GALERI_KEY, JSON.stringify(galeriUpload)); }catch(err){}
+          renderGaleri();
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    els["galeri-input"].value = "";
+  });
+
+  els["galeri-grid"].addEventListener("click", function(e){
+    var delBtn = e.target.closest("[data-del-idx]");
+    if(delBtn){
+      var di = Number(delBtn.dataset.delIdx);
+      galeriUpload.splice(di,1);
+      try{ localStorage.setItem(GALERI_KEY, JSON.stringify(galeriUpload)); }catch(err){}
+      renderGaleri();
+      return;
+    }
+    var tile = e.target.closest(".galeri-tile");
+    if(!tile) return;
+    var img = tile.querySelector("img");
+    var cap = tile.querySelector(".cap");
+    if(!img) return;
+    els["lightbox-img"].src = img.src;
+    els["lightbox-cap"].textContent = cap ? cap.textContent : "";
+    els["lightbox"].classList.add("open");
+  });
+  function closeLightbox(){ els["lightbox"].classList.remove("open"); els["lightbox-img"].src=""; }
+  els["lightbox-close"].addEventListener("click", closeLightbox);
+  els["lightbox"].addEventListener("click", function(e){ if(e.target === els["lightbox"]) closeLightbox(); });
+
+  /* ---------- KONTAK / PENGELOLA ---------- */
+  (function renderKontak(){
+    var k = CONFIG.kontak;
+    els["kontak-avatar"].textContent = (k.nama||"?").trim().charAt(0).toUpperCase();
+    els["kontak-nama"].textContent = k.nama;
+    els["kontak-peran"].textContent = k.peran;
+    els["kontak-msg"].textContent = "Website ini sepenuhnya dikelola oleh " + k.nama + ", untuk menambahkan info, foto, atau perubahan yang belum tercantum, harap hubungi orang yang bersangkutan. Kritik & Saran anda sangat berharga.";
+    var actions = "";
+    if(k.whatsapp){
+      actions += '<a class="kontak-btn wa" href="https://wa.me/'+encodeURIComponent(k.whatsapp)+'" target="_blank" rel="noopener">\uD83D\uDCAC WhatsApp</a>';
+    }
+    if(k.telepon){
+      actions += '<a class="kontak-btn tel" href="tel:'+encodeURIComponent(k.telepon.replace(/[^0-9+]/g,""))+'">\uD83D\uDCDE '+esc(k.telepon)+'</a>';
+    }
+    els["kontak-actions"].innerHTML = actions;
+  })();
+
+  /* ---------- NAV: mobile burger + active link ---------- */
+  var burger = document.getElementById("burger-btn");
+  var navLinks = document.getElementById("nav-links");
+  burger.addEventListener("click", function(){ navLinks.classList.toggle("open"); });
+  navLinks.querySelectorAll("a").forEach(function(a){
+    a.addEventListener("click", function(){ navLinks.classList.remove("open"); });
+  });
+
+  var sections = ["beranda","profil","jadwal","pengumuman","galeri","kontak"].map(function(id){ return document.getElementById(id); });
+  var navAnchors = navLinks.querySelectorAll("a");
+  function updateActiveNav(){
+    var pos = window.scrollY + 90;
+    var current = sections[0].id;
+    sections.forEach(function(sec){ if(sec.offsetTop <= pos) current = sec.id; });
+    navAnchors.forEach(function(a){
+      a.classList.toggle("active", a.getAttribute("href") === "#"+current);
+    });
+  }
+  window.addEventListener("scroll", updateActiveNav);
+  updateActiveNav();
+
+})();
+</script>
+</body>
+</html>
